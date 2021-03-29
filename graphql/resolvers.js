@@ -102,10 +102,10 @@ module.exports = {
         const posts = await Post.findAll();
 
         return {posts: posts.map(p => {
-            return {...p, id: p.id}
+            return {...p, id: p.id, title: p.title, content: p.content}
         }), totalPosts: totalPosts};
     },
-    post: async function({ postId }) {
+    post: async function({ postId }, req) {
         if (!req.isAuth) {
             const error = new Error('Not Authenticated');
             error.code = 401;
@@ -117,9 +117,12 @@ module.exports = {
             error.code = 404;
             throw error;
         }
+        console.log(post);
         return {
             ...post,
-            id: post.id
+            id: post.id,
+            title: post.title,
+            content: post.content
         }
     },
     updatePost: async function ({id, postInput}, req) {
